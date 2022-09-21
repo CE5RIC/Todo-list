@@ -1,8 +1,12 @@
 
-const Form = () => {
+const Form = ({setText}) => {
     // Getting the value typed by user using the below function
     const textHandler = (e) => {
         console.log(e.target.value);
+
+        // Using SetText as a prop while changing the state
+        setText(e.target.value);
+
     }
 
     return (
