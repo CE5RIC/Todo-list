@@ -1,7 +1,7 @@
 import './App.css';
 import Form from'./components/Form';
 import TodoList from "./components/TodoList";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 
 
 function App() {
@@ -9,6 +9,12 @@ function App() {
     const [todos, setTodos] = useState([]);
     const [status, setStatus] = useState("all");
     const [filteredTodos, setFilteredTodos] = useState([]);
+
+    useEffect(() => {
+        filterHandler();
+        saveLocalTodos();
+    }, [todos, status]);
+
 
 
     const filterHandler = () => {
@@ -25,13 +31,21 @@ function App() {
         }
     }
 
+    const saveLocalTodos = () => {
+        if(localStorage.getItems('todos') === null) {
+            localStorage.setItem('todos', JSON.stringify([]));
+        }else {
+            localStorage.setItem('todos', JSON.stringify(todos));
+        }
+    }
+
   return (
     <div className="App">
         <header>
             <h1>Todo List </h1>
         </header>
          <Form setStatus={setStatus} todos={todos} setTodos={setTodos} text={text} setText={setText} />
-        <TodoList setTodos={setTodos} todos={todos}/>
+        <TodoList filteredTodos={filteredTodos} setTodos={setTodos} todos={todos}/>
     </div>
   );
 }
